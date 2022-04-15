@@ -4,3 +4,14 @@ GET https://api.rechargeapps.com/orders/{{$dotenv ORDER_NUMBER}}
 Content-Type: application/json
 X-Recharge-Version: 2021-11
 X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+
+###
+# Update subscription price
+PUT https://api.rechargeapps.com/subscriptions/{{$dotenv SUBSCRIPTION_NUMBER}}
+Content-Type: application/json
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+Accept: application/json
+
+{
+  "price": 11.16
+}
