@@ -16,7 +16,7 @@ Content-Type: application/json
 POST {{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created
 Content-Type: application/json
 
-< ./order.json
+< ./test_data/order.json
 
 ###
 # Add Webhook
