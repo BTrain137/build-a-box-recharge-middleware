@@ -1,6 +1,6 @@
 const axiosRequest = require("../Helpers/axiosRequest");
 
-const { RECHARGE_API_TOKEN } = process.env;
+const { RECHARGE_API_TOKEN, RECHARGE_VERSION } = process.env;
 
 const updateSubscriptionPrice = async (subscriptionId, pricePerUnit) => {
   const query = {
@@ -8,6 +8,7 @@ const updateSubscriptionPrice = async (subscriptionId, pricePerUnit) => {
     headers: {
       "Content-Type": "application/json",
       "X-Recharge-Access-Token": RECHARGE_API_TOKEN,
+			"X-Recharge-Version": RECHARGE_VERSION,
     },
     method: "PUT",
     data: {

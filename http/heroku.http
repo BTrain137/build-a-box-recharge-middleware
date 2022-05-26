@@ -19,6 +19,12 @@ Content-Type: application/json
 < ./test_data/order.json
 
 ###
+# Get Stor info
+GET https://api.rechargeapps.com/store
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+X-Recharge-Version: 2021-11
+
+###
 # Add Webhook
 POST https://api.rechargeapps.com/webhooks
 Content-Type: application/json
@@ -26,7 +32,7 @@ X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
 Accept: application/json
 
 {
-	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created",
+	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created-all-subscription",
 	"topic": "order/created"
 }
 
