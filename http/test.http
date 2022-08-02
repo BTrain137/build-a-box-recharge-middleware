@@ -17,3 +17,10 @@ POST http://localhost:3001/webhook/recharge/order-created
 Content-Type: application/json
 
 < ./test_data/order.json
+
+###
+# Order created
+POST http://localhost:3001/webhook/recharge/order-created--allow-all
+Content-Type: application/json
+
+< ./test_data/order.json
