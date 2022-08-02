@@ -98,9 +98,9 @@ router.post("/order-created--allow-all", async (req, res) => {
     const eligibleItems = [];
     for (let i = 0; i < line_items.length; i++) {
       const line_item = line_items[i];
-      const { subscription_id, unit_price } = line_item;
+      const { purchase_item_id, unit_price } = line_item;
       eligibleItems.push({
-        subscription_id,
+        purchase_item_id,
         unit_price,
       });
     }
@@ -110,9 +110,9 @@ router.post("/order-created--allow-all", async (req, res) => {
 
     for (let j = 0; j < eligibleItems.length; j++) {
       const item = eligibleItems[j];
-      const { subscription_id, unit_price } = item;
+      const { purchase_item_id, unit_price } = item;
       const results = await updateSubscriptionPrice(
-        subscription_id,
+        purchase_item_id,
         unit_price
       );
       const { product_title } = results.subscription;
