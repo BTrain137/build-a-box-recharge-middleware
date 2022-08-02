@@ -19,34 +19,8 @@ Content-Type: application/json
 < ./test_data/order.json
 
 ###
-# Get Stor info
-GET https://api.rechargeapps.com/store
-X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
-X-Recharge-Version: 2021-11
-
-###
-# Add Webhook
-POST https://api.rechargeapps.com/webhooks
+# Testing hosted webhook
+POST {{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created--allow-all
 Content-Type: application/json
-X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
-Accept: application/json
 
-{
-	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created--allow-all",
-	"topic": "order/created"
-}
-
-###
-# List webhooks
-GET https://api.rechargeapps.com/webhooks
-Content-Type: application/json
-X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
-Accept: application/json
-
-###
-# Delete webhooks
-DELETE https://api.rechargeapps.com/webhooks/1430961
-Content-Type: application/json
-X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
-Accept: application/json
-
+< ./test_data/webhook_order.json
