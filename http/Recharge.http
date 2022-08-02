@@ -1,6 +1,6 @@
 ###
 # GET Order
-GET https://api.rechargeapps.com/orders/{{$dotenv ORDER_NUMBER}}
+GET https://api.rechargeapps.com/orders/{{$dotenv RECHARGE_ORDER_ID}}
 Content-Type: application/json
 X-Recharge-Version: 2021-11
 X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
@@ -24,6 +24,17 @@ Accept: application/json
 }
 
 ###
+# Update webhook endpoint
+PUT https://api.rechargeapps.com/webhooks/{{$dotenv RECHARGE_WEBHOOK_ID}}
+Content-Type: application/json
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+Accept: application/json
+
+{
+	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created--allow-all"
+}
+
+###
 # List webhooks
 GET https://api.rechargeapps.com/webhooks
 Content-Type: application/json
@@ -32,7 +43,7 @@ Accept: application/json
 
 ###
 # Delete webhooks
-DELETE https://api.rechargeapps.com/webhooks/1430961
+DELETE https://api.rechargeapps.com/webhooks/{{$dotenv RECHARGE_WEBHOOK_ID}}
 Content-Type: application/json
 X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
 Accept: application/json
