@@ -32,7 +32,7 @@ X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
 Accept: application/json
 
 {
-	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created-all-subscription",
+	"address": "{{$dotenv HEROKU_ENDPOINT}}/webhook/recharge/order-created--allow-all",
 	"topic": "order/created"
 }
 
@@ -44,8 +44,8 @@ X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
 Accept: application/json
 
 ###
-# List webhooks
-DELETE https://api.rechargeapps.com/webhooks/1174398
+# Delete webhooks
+DELETE https://api.rechargeapps.com/webhooks/1430961
 Content-Type: application/json
 X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
 Accept: application/json

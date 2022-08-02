@@ -23,4 +23,41 @@ Content-Type: application/json
 POST http://localhost:3001/webhook/recharge/order-created--allow-all
 Content-Type: application/json
 
-< ./test_data/order.json
+< ./test_data/webhook_order.json
+
+###
+# Create Webhook
+POST https://api.rechargeapps.com/webhooks
+Content-Type: application/json
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+Accept: application/json
+
+{
+	"address": "{{$dotenv NGROK_ENDPOINT}}/webhook/recharge/order-created--allow-all",
+	"topic": "order/created"
+}
+
+###
+# Create Webhook
+POST https://api.rechargeapps.com/webhooks
+Content-Type: application/json
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+Accept: application/json
+
+{
+	"address": "{{$dotenv NGROK_ENDPOINT}}/webhook/recharge/order-created--allow-all",
+	"topic": "order/created"
+}
+
+###
+# Update Webhook
+PUT https://api.rechargeapps.com/webhooks/1430963
+Content-Type: application/json
+X-Recharge-Access-Token: {{$dotenv RECHARGE_ACCESS_TOKEN}}
+Accept: application/json
+
+{
+	"address": "{{$dotenv NGROK_ENDPOINT}}/webhook/recharge/order-created--allow-all",
+	"topic": "order/created",
+	"included_objects": ["metafields"]
+}
