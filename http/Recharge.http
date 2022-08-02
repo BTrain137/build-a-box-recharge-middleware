@@ -1,5 +1,5 @@
 ###
-# List webhooks
+# GET Order
 GET https://api.rechargeapps.com/orders/{{$dotenv ORDER_NUMBER}}
 Content-Type: application/json
 X-Recharge-Version: 2021-11
