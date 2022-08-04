@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { updateSubscriptionPrice } = require("../../Recharge/subscriptions");
+const { getOriginalVariantPrice } = require("../../Shopify/product");
 const router = Router();
 
 // /webhook/recharge/order-created
@@ -57,7 +58,9 @@ router.post("/order-created-all-subscription", async (req, res) => {
     for (let i = 0; i < line_items.length; i++) {
       const line_item = line_items[i];
       const { subscription_id, unit_price, properties } = line_item;
-      const isSubscriptionItem = properties.some(({ name }) => name == "shipping_interval_unit_type");
+      const isSubscriptionItem = properties.some(
+        ({ name }) => name == "shipping_interval_unit_type"
+      );
       if (isSubscriptionItem) {
         eligibleItems.push({
           subscription_id,
@@ -99,35 +102,52 @@ router.post("/order-created--allow-all", async (req, res) => {
     const eligibleItems = [];
     for (let i = 0; i < line_items.length; i++) {
       const line_item = line_items[i];
-      const { subscription_id, price, quantity} = line_item;
+      const {
+        subscription_id,
+        shopify_product_id,
+        shopify_variant_id,
+        quantity,
+        properties,
+      } = line_item;
+      const isSubscriptionItem = properties.some(
+        ({ name }) => name === "shipping_interval_frequency"
+      );
+      if (!isSubscriptionItem) {
+        continue;
+      }
       eligibleItems.push({
         subscription_id,
-        price,
+        shopify_product_id,
+        shopify_variant_id,
         quantity,
       });
     }
 
     if (eligibleItems.length === 0) {
-      return res.sendStatus(200);;
+      return res.sendStatus(200);
     }
 
-    const totalQty = eligibleItems.reduce((acc, {quantity}) => {
+    const totalQty = eligibleItems.reduce((acc, { quantity }) => {
       return acc + quantity;
     }, 0);
 
-    if(totalQty === 1) {
-      return res.sendStatus(200);;
+    if (totalQty === 1) {
+      return res.sendStatus(200);
     }
+
+    const discountAmountPercent = totalQty >= 3 ? 0.75 : 0.85;
 
     for (let j = 0; j < eligibleItems.length; j++) {
       const item = eligibleItems[j];
-      const { subscription_id, price } = item;
+      const { subscription_id, shopify_product_id, shopify_variant_id } = item;
       let results;
       try {
-        results = await updateSubscriptionPrice(
-          subscription_id,
-          price
+        const originalPrice = await getOriginalVariantPrice(
+          shopify_product_id,
+          shopify_variant_id
         );
+        const price = (originalPrice * discountAmountPercent).toFixed(2);
+        results = await updateSubscriptionPrice(subscription_id, price);
       } catch (error) {
         res.sendStatus(500);
         console.log(error);
