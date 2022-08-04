@@ -89,6 +89,7 @@ router.post("/order-created-all-subscription", async (req, res) => {
 
 // /webhook/recharge/order-created--allow-all
 router.post("/order-created--allow-all", async (req, res) => {
+  console.log(JSON.stringify(req.body));
   const { order } = req.body;
   const { tags, line_items, shopify_order_number } = order;
   console.log("+++++++++++++++++++++++++++++++++++");
@@ -102,25 +103,35 @@ router.post("/order-created--allow-all", async (req, res) => {
       eligibleItems.push({
         subscription_id,
         price,
-				quantity,
+        quantity,
       });
     }
 
     if (eligibleItems.length === 0) {
-      return;
+      return res.sendStatus(200);;
     }
 
-		const totalQty = eligibleItems.reduce((acc, {quantity}) => {
-			return acc + quantity;
-		}, 0);
+    const totalQty = eligibleItems.reduce((acc, {quantity}) => {
+      return acc + quantity;
+    }, 0);
+
+    if(totalQty === 1) {
+      return res.sendStatus(200);;
+    }
 
     for (let j = 0; j < eligibleItems.length; j++) {
       const item = eligibleItems[j];
       const { subscription_id, price } = item;
-      const results = await updateSubscriptionPrice(
-        subscription_id,
-        price
-      );
+      let results;
+      try {
+        results = await updateSubscriptionPrice(
+          subscription_id,
+          price
+        );
+      } catch (error) {
+        res.sendStatus(500);
+        console.log(error);
+      }
       const { product_title } = results.subscription;
       console.log(`#${j}`, product_title);
     }
